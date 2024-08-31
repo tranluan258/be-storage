@@ -1,21 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from '../database';
-import { User, users } from '../database/schemas';
+import { NewUser, User, users } from '../database/schemas';
+import { CreateUserDto } from './dto/create-user.dto';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class UserRepository {
   constructor(private readonly drizzleService: DrizzleService) {}
 
   async getUserInfo(): Promise<User> {
-    const res: User[] = await this.drizzleService.db
-      .select()
-      .from(users)
-      .limit(1);
-
-    if (res.length === 0) {
+    const user = await this.drizzleService.db.query.users.findFirst();
+    if (!user) {
       throw new NotFoundException('Not found users');
     }
 
-    return res[0];
+    return user;
+  }
+
+  async userExisted(email: string): Promise<boolean> {
+    const existedUser = await this.drizzleService.db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+
+    if (existedUser) return true;
+
+    return false;
+  }
+
+  async createUser(createUserDto: CreateUserDto): Promise<NewUser> {
+    const newUsers: NewUser[] = await this.drizzleService.db
+      .insert(users)
+      .values(createUserDto)
+      .returning();
+
+    return newUsers[0];
   }
 }
