@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../database/schemas';
-import { UserDecorator } from '@/shared/decorator';
+import { UserDecorator } from '../../shared/decorator';
 import { LoginDto, LoginResponse } from './dtos';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 

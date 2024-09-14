@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DatabaseModule } from '@modules/database';
+import { DatabaseModule } from './modules/database';
 import { DatabseConfig } from './modules/app-config';
 import { AuthModule } from './modules/auth/auth.module';
 import configuration from './modules/app-config/configuration';
