@@ -27,6 +27,12 @@ export class UserRepository {
     return false;
   }
 
+  async findByEmail(email: string): Promise<User | undefined> {
+    return this.drizzleService.db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<NewUser> {
     const newUsers: NewUser[] = await this.drizzleService.db
       .insert(users)
