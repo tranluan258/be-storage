@@ -5,6 +5,7 @@ import { DatabseConfig } from './modules/app-config';
 import { AuthModule } from './modules/auth/auth.module';
 import configuration from './modules/app-config/configuration';
 import { UsersModule } from './modules/users/users.module';
+import { SupabaseModule } from './shared/supabase/supabase.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsersModule } from './modules/users/users.module';
     }),
     AuthModule,
     UsersModule,
+    SupabaseModule,
   ],
 })
 export class AppModule {}
