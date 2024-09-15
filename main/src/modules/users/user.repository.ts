@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from '../database';
 import { NewUser, User, users } from '../database/schemas';
-import { CreateUserDto } from './dto/create-user.dto';
 import { eq } from 'drizzle-orm';
+import { RegisterDto } from '../auth/dtos';
 
 @Injectable()
 export class UserRepository {
@@ -33,10 +33,10 @@ export class UserRepository {
     });
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<NewUser> {
+  async createUser(user: RegisterDto): Promise<NewUser> {
     const newUsers: NewUser[] = await this.drizzleService.db
       .insert(users)
-      .values(createUserDto)
+      .values(user)
       .returning();
 
     return newUsers[0];

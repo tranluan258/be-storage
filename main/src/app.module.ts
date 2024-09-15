@@ -4,7 +4,7 @@ import { DatabaseModule } from './modules/database';
 import { DatabseConfig } from './modules/app-config';
 import { AuthModule } from './modules/auth/auth.module';
 import configuration from './modules/app-config/configuration';
-import { UsersModule } from './modules/users';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
