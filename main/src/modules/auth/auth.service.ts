@@ -1,8 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { NewUser, User } from '../database/schemas';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './types';
-import { LoginResponse, RegisterDto } from './dtos';
+import { LoginResponse, RegisterDto, UserInfoDto } from './dtos';
 import { UserRepository } from '../users/user.repository';
 import * as bcrypt from 'bcrypt';
 
@@ -63,5 +67,13 @@ export class AuthService {
     const hash = await bcrypt.hash(password, saltOrRounds);
 
     return hash;
+  }
+
+  async getUserInfo(userId: number): Promise<UserInfoDto> {
+    const user = await this.userRepository.getUserInfo(userId);
+
+    if (!user) throw new NotFoundException('Not found user');
+
+    return user;
   }
 }

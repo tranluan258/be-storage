@@ -1,10 +1,18 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserDecorator } from '../../shared/decorator';
-import { LoginDto, LoginResponse, RegisterDto } from './dtos';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { LoginDto, LoginResponse, RegisterDto, UserInfoDto } from './dtos';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtPayload } from './types';
+import { JwtAuthGuard } from './guards';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -33,5 +41,16 @@ export class AuthController {
     return {
       message: 'Register successfully',
     };
+  }
+
+  @HttpCode(200)
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    type: UserInfoDto,
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('info')
+  async userInfo(@UserDecorator() user: JwtPayload): Promise<UserInfoDto> {
+    return this.authService.getUserInfo(user.id);
   }
 }
