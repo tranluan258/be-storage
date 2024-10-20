@@ -15,6 +15,13 @@
       "when": 1729399578287,
       "tag": "0001_create-drives-table",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729401589253,
+      "tag": "0002_add-user-id-to-drives",
+      "breakpoints": true
     }
   ]
 }

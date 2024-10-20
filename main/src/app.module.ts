@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import configuration from './modules/app-config/configuration';
 import { UsersModule } from './modules/users/users.module';
 import { SupabaseModule } from './shared/supabase/supabase.module';
+import { DrivesModule } from './modules/drives/drives.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SupabaseModule } from './shared/supabase/supabase.module';
     AuthModule,
     UsersModule,
     SupabaseModule,
+    DrivesModule,
   ],
 })
 export class AppModule {}

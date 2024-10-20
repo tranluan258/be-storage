@@ -1,0 +1,1 @@
+ALTER TABLE "drives" ADD COLUMN "user_id" serial NOT NULL;

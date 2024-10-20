@@ -12,6 +12,7 @@ export const drives = pgTable('drives', {
   name: varchar('name').notNull(),
   type: varchar('type').notNull(),
   parent_id: serial('parent_id'),
+  user_id: serial('user_id').notNull(),
   url: varchar('url'),
   metadada: jsonb('metadada'),
   created_at: timestamp('created_at').defaultNow(),
@@ -30,3 +31,5 @@ export const childrenDrives = relations(drives, ({ one }) => ({
 }));
 
 export type Drive = typeof drives.$inferSelect;
+export type NewDrive = typeof drives.$inferInsert;
+export type InsertDrive = Omit<NewDrive, 'id'>;
