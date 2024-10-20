@@ -9,6 +9,7 @@ import { JwtPayload } from './types';
 import { LoginResponse, RegisterDto, UserInfoDto } from './dtos';
 import { UserRepository } from '../users/user.repository';
 import * as bcrypt from 'bcrypt';
+import { randomBytes } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -43,8 +44,11 @@ export class AuthService {
       email: user.email,
       fullName: user.fullName,
     };
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = randomBytes(24).toString('hex');
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken,
+      refreshToken,
     };
   }
 

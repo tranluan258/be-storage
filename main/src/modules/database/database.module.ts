@@ -23,6 +23,8 @@ import { DrizzleService } from './drizzle.service';
           user: databaseOptions.user,
           password: databaseOptions.password,
           database: databaseOptions.database,
+          max: 5,
+          min: 1,
           ssl: false,
         });
       },
