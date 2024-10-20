@@ -3,7 +3,7 @@ import { DrivesService } from './drives.service';
 import { CreateDriveDto } from './dto/create-drive.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards';
-import { UserDecorator } from '@/shared/decorator';
+import { UserDecorator } from '../../shared/decorator';
 import { JwtPayload } from '../auth/types';
 
 @Controller('drives')
