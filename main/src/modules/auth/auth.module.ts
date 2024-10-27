@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
+import { DrivesRepository } from '../drives/drives.repository';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { UsersModule } from '../users/users.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStategy, JwtStrategy],
+  providers: [AuthService, LocalStategy, JwtStrategy, DrivesRepository],
 })
 export class AuthModule {}

@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateDriveDto } from './dto/create-drive.dto';
 import { DrivesRepository } from './drives.repository';
-import { NewDrive } from '../database/schemas';
+import { Drive, NewDrive } from '../database/schemas';
 import { JwtPayload } from '../auth/types';
+import { GetDrivesQueryString } from './dto';
 
 @Injectable()
 export class DrivesService {
@@ -25,5 +26,19 @@ export class DrivesService {
     });
 
     return drive;
+  }
+
+  async getDrives(
+    query: GetDrivesQueryString,
+    user: JwtPayload,
+  ): Promise<Drive[]> {
+    if (query.parent_id) {
+      return this.drivesRepository.getDrivesByParentId(
+        query.parent_id,
+        user.id,
+      );
+    }
+
+    return this.drivesRepository.getDefaultDrives(user.id);
   }
 }

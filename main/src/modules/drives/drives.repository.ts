@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../database';
-import { drives, InsertDrive, NewDrive } from '../database/schemas';
-import { and, eq } from 'drizzle-orm';
+import { Drive, drives, InsertDrive, NewDrive } from '../database/schemas';
+import { and, eq, isNotNull } from 'drizzle-orm';
 
 @Injectable()
 export class DrivesRepository {
@@ -24,5 +24,32 @@ export class DrivesRepository {
       .returning();
 
     return newDrive[0];
+  }
+
+  async getDrivesByParentId(
+    parentId: number,
+    userId: number,
+  ): Promise<Drive[]> {
+    const listDrives = await this.drizzleService.db.query.drives.findMany({
+      where: and(eq(drives.parent_id, parentId), eq(drives.user_id, userId)),
+    });
+
+    return listDrives;
+  }
+
+  getDefaultDrives(userId: number): Promise<Drive[]> {
+    return this.drizzleService.db.query.drives.findMany({
+      where: and(isNotNull(drives.parent_id), eq(drives.user_id, userId)),
+    });
+  }
+
+  createDefaultDrivesForNewUser(userId: number): Promise<NewDrive> {
+    const insertDrive: InsertDrive = {
+      name: 'My Drive',
+      type: 'folder',
+      user_id: userId,
+    };
+
+    return this.createDrive(insertDrive);
   }
 }

@@ -1,10 +1,20 @@
-import { Controller, Post, Body, HttpCode, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  UseGuards,
+  Get,
+  Query,
+} from '@nestjs/common';
 import { DrivesService } from './drives.service';
 import { CreateDriveDto } from './dto/create-drive.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards';
 import { UserDecorator } from '../../shared/decorator';
 import { JwtPayload } from '../auth/types';
+import { Drive } from '../database/schemas';
+import { GetDrivesQueryString } from './dto';
 
 @Controller('drives')
 @ApiTags('Drives')
@@ -23,6 +33,18 @@ export class DrivesController {
 
     return {
       message: 'Create drives successfully',
+    };
+  }
+
+  @Get()
+  async getDrives(
+    @Query() query: GetDrivesQueryString,
+    @UserDecorator() user: JwtPayload,
+  ): Promise<{ data: Drive[]; total: number }> {
+    const drives = await this.drivesService.getDrives(query, user);
+    return {
+      data: drives,
+      total: drives.length,
     };
   }
 }
