@@ -24,7 +24,6 @@ export class DrivesService {
       ...createDriveDto,
       user_id: user.id,
     });
-
     return drive;
   }
 

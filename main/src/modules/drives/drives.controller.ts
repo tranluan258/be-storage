@@ -14,7 +14,11 @@ import { JwtAuthGuard } from '../auth/guards';
 import { UserDecorator } from '../../shared/decorator';
 import { JwtPayload } from '../auth/types';
 import { Drive } from '../database/schemas';
-import { GetDrivesQueryString } from './dto';
+import { DriveDto, GetDrivesQueryString } from './dto';
+import {
+  ApiPaginateResponse,
+  PaginationDto,
+} from '../../shared/swager-response';
 
 @Controller('drives')
 @ApiTags('Drives')
@@ -37,10 +41,11 @@ export class DrivesController {
   }
 
   @Get()
+  @ApiPaginateResponse(DriveDto)
   async getDrives(
     @Query() query: GetDrivesQueryString,
     @UserDecorator() user: JwtPayload,
-  ): Promise<{ data: Drive[]; total: number }> {
+  ): Promise<PaginationDto<Drive>> {
     const drives = await this.drivesService.getDrives(query, user);
     return {
       data: drives,
