@@ -1,4 +1,8 @@
-export interface SupabaseConfig {
-  url: string;
-  key: string;
+export interface SupabaseStorageConfig {
+  endpoint: string;
+  region: string;
+  credentials: {
+    accessKeyId: string;
+    secretAccessKey: string;
+  };
 }

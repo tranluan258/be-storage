@@ -6,5 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule],
   providers: [StorageSerice],
+  exports: [StorageSerice],
 })
 export class SupabaseModule {}

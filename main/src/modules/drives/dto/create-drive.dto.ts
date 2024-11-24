@@ -12,4 +12,6 @@ export class CreateDriveDto {
 
   @ApiPropertyOptional()
   metadata?: unknown;
+
+  url?: string;
 }

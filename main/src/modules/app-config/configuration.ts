@@ -10,8 +10,12 @@ export default () => ({
     password: process.env.DB_PASSWORD,
   },
   supabase: {
-    url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_KEY,
+    region: process.env.SUPABASE_REGION,
+    endpoint: process.env.SUPABASE_ENDPOINT,
+    credentials: {
+      accessKeyId: process.env.SUPABASE_ACCESS_KEY_ID,
+      secretAccessKey: process.env.SUPABASE_SECRET_ACCESS_KEY,
+    },
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'ac',

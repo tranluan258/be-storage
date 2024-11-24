@@ -6,19 +6,22 @@ import {
   UseGuards,
   Get,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { DrivesService } from './drives.service';
 import { CreateDriveDto } from './dto/create-drive.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards';
 import { UserDecorator } from '../../shared/decorator';
 import { JwtPayload } from '../auth/types';
 import { Drive } from '../database/schemas';
-import { DriveDto, GetDrivesQueryString } from './dto';
+import { DriveDto, GetDrivesQueryString, UploadFileDto } from './dto';
 import {
   ApiPaginateResponse,
   PaginationDto,
 } from '../../shared/swager-response';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('drives')
 @ApiTags('Drives')
@@ -50,6 +53,22 @@ export class DrivesController {
     return {
       data: drives,
       total: drives.length,
+    };
+  }
+
+  @Post('upload')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  async upload(
+    @Body() uploadFileDto: UploadFileDto,
+    @UploadedFile() file: Express.Multer.File,
+    @UserDecorator() user: JwtPayload,
+  ): Promise<{ message: string }> {
+    if (!file) return { message: 'File is required' };
+
+    await this.drivesService.upload(uploadFileDto, user, file);
+    return {
+      message: 'Create drives successfully',
     };
   }
 }
