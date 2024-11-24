@@ -66,7 +66,7 @@ export class DrivesController {
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addMaxSizeValidator({
-          maxSize: 5000,
+          maxSize: 5 * 1000 * 1024,
           message: 'File size limit exceed',
         })
         .build({
