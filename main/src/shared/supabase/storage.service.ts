@@ -13,7 +13,6 @@ export class StorageSerice implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     const supabaseStorageConfig =
       this.configService.get<SupabaseStorageConfig>('supabase')!;
-    console.log(supabaseStorageConfig);
     this.suppabaseClient = new S3Client({
       forcePathStyle: true,
       ...supabaseStorageConfig,
