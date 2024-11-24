@@ -1,7 +1,8 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseStorageConfig } from '../../modules/app-config';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 
 @Injectable()
 export class StorageSerice implements OnModuleInit {
@@ -22,13 +23,19 @@ export class StorageSerice implements OnModuleInit {
   async upload(file: Express.Multer.File): Promise<string | undefined> {
     try {
       const path = `upload/${file.originalname}`;
-      const uploadCommand = new PutObjectCommand({
-        Bucket: 'file-storage',
-        Key: path,
-        Body: file.buffer,
-        ContentType: file.mimetype,
+
+      const upload = new Upload({
+        client: this.suppabaseClient,
+        queueSize: 10,
+        params: {
+          Bucket: 'file-storage',
+          Key: path,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+        },
       });
-      await this.suppabaseClient.send(uploadCommand);
+
+      await upload.done();
 
       return path;
     } catch (err) {
