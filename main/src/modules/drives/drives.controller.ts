@@ -8,6 +8,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  ParseFilePipeBuilder,
+  BadRequestException,
 } from '@nestjs/common';
 import { DrivesService } from './drives.service';
 import { CreateDriveDto } from './dto/create-drive.dto';
@@ -61,7 +63,20 @@ export class DrivesController {
   @UseInterceptors(FileInterceptor('file'))
   async upload(
     @Body() uploadFileDto: UploadFileDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addMaxSizeValidator({
+          maxSize: 5000,
+          message: 'File size limit exceed',
+        })
+        .build({
+          fileIsRequired: true,
+          exceptionFactory: (error) => {
+            throw new BadRequestException(error);
+          },
+        }),
+    )
+    file: Express.Multer.File,
     @UserDecorator() user: JwtPayload,
   ): Promise<{ message: string }> {
     if (!file) return { message: 'File is required' };

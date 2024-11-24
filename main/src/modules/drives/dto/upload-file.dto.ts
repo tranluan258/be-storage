@@ -1,4 +1,4 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UploadFileDto {
   @ApiPropertyOptional()
@@ -9,10 +9,10 @@ export class UploadFileDto {
 
   url?: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     type: 'file',
     name: 'file',
     format: 'binary',
   })
-  file?: Express.Multer.File;
+  file: Express.Multer.File;
 }
