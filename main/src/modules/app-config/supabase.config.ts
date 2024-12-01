@@ -5,4 +5,5 @@ export interface SupabaseStorageConfig {
     accessKeyId: string;
     secretAccessKey: string;
   };
+  storageBasePath: string;
 }

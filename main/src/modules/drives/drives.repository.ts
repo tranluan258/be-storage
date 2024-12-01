@@ -52,4 +52,10 @@ export class DrivesRepository {
 
     return this.createDrive(insertDrive);
   }
+
+  getDriveById(id: number, userId: number): Promise<Drive | undefined> {
+    return this.drizzleService.db.query.drives.findFirst({
+      where: and(eq(drives.user_id, userId), eq(drives.id, id)),
+    });
+  }
 }

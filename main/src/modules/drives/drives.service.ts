@@ -1,16 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateDriveDto } from './dto/create-drive.dto';
 import { DrivesRepository } from './drives.repository';
 import { Drive, NewDrive } from '../database/schemas';
 import { JwtPayload } from '../auth/types';
 import { GetDrivesQueryString, UploadFileDto } from './dto';
 import { StorageSerice } from '../../shared/supabase/storage.service';
+import { ConfigService } from '@nestjs/config';
+import { SupabaseStorageConfig } from '../app-config';
 
 @Injectable()
 export class DrivesService {
   constructor(
     private readonly drivesRepository: DrivesRepository,
     private readonly storageService: StorageSerice,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(
@@ -72,5 +79,20 @@ export class DrivesService {
     }
 
     return this.drivesRepository.getDefaultDrives(user.id);
+  }
+
+  async getDriveById(id: number, userId: number): Promise<Drive> {
+    const driveExisted = await this.drivesRepository.getDriveById(id, userId);
+
+    if (!driveExisted) throw new NotFoundException('Not found drive');
+
+    if (driveExisted.type !== 'folder') {
+      const supabaseStorageConfig =
+        this.configService.get<SupabaseStorageConfig>('supabase')!;
+      driveExisted.url =
+        supabaseStorageConfig.storageBasePath + driveExisted.url;
+    }
+
+    return driveExisted;
   }
 }

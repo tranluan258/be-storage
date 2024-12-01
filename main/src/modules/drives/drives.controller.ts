@@ -10,6 +10,8 @@ import {
   UploadedFile,
   ParseFilePipeBuilder,
   BadRequestException,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { DrivesService } from './drives.service';
 import { CreateDriveDto } from './dto/create-drive.dto';
@@ -85,5 +87,13 @@ export class DrivesController {
     return {
       message: 'Create drives successfully',
     };
+  }
+
+  @Get(':id')
+  async getDriveById(
+    @Param('id', ParseIntPipe) id: number,
+    @UserDecorator() user: JwtPayload,
+  ): Promise<Drive> {
+    return this.drivesService.getDriveById(id, user.id);
   }
 }

@@ -16,6 +16,7 @@ export default () => ({
       accessKeyId: process.env.SUPABASE_ACCESS_KEY_ID,
       secretAccessKey: process.env.SUPABASE_SECRET_ACCESS_KEY,
     },
+    storageBasePath: process.env.SUPABASE_STORAGAGE_BASEPATH,
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'ac',
