@@ -1,24 +1,23 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default () => ({
-  port: parseInt(process.env.PORT!, 10) || 3000,
+const ENV = process.env;
+export default (): Record<string, unknown> => ({
+  port: parseInt(ENV.PORT!, 10) || 3000,
   database: {
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT!, 10) || 5432,
-    name: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    host: ENV.DB_HOST,
+    port: parseInt(ENV.DB_PORT!, 10) || 5432,
+    name: ENV.DB_NAME,
+    user: ENV.DB_USER,
+    password: ENV.DB_PASSWORD,
   },
   supabase: {
-    region: process.env.SUPABASE_REGION,
-    endpoint: process.env.SUPABASE_ENDPOINT,
+    region: ENV.SUPABASE_REGION,
+    endpoint: ENV.SUPABASE_ENDPOINT,
     credentials: {
-      accessKeyId: process.env.SUPABASE_ACCESS_KEY_ID,
-      secretAccessKey: process.env.SUPABASE_SECRET_ACCESS_KEY,
+      accessKeyId: ENV.SUPABASE_ACCESS_KEY_ID,
+      secretAccessKey: ENV.SUPABASE_SECRET_ACCESS_KEY,
     },
-    storageBasePath: process.env.SUPABASE_STORAGAGE_BASEPATH,
+    storageBasePath: ENV.SUPABASE_STORAGAGE_BASEPATH,
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'ac',
+    secret: ENV.JWT_SECRET || 'ac',
   },
 });
