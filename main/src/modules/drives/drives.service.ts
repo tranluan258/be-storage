@@ -24,20 +24,18 @@ export class DrivesService {
     createDriveDto: CreateDriveDto,
     user: JwtPayload,
   ): Promise<NewDrive> {
-    {
-      const isExixsted = await this.drivesRepository.driveExisted(
-        createDriveDto.name,
-        user.id,
-      );
+    const isExixsted = await this.drivesRepository.driveExisted(
+      createDriveDto.name,
+      user.id,
+    );
 
-      if (isExixsted) throw new BadRequestException('Name already existed');
+    if (isExixsted) throw new BadRequestException('Name already existed');
 
-      const drive = await this.drivesRepository.createDrive({
-        ...createDriveDto,
-        user_id: user.id,
-      });
-      return drive;
-    }
+    const drive = await this.drivesRepository.createDrive({
+      ...createDriveDto,
+      user_id: user.id,
+    });
+    return drive;
   }
 
   async upload(
