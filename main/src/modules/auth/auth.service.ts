@@ -10,14 +10,14 @@ import { LoginResponse, RegisterDto, UserInfoDto } from './dtos';
 import { UserRepository } from '../users/user.repository';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
-import { DrivesRepository } from '../drives/drives.repository';
+import { DrivesService } from '../drives/drives.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userRepository: UserRepository,
     private jwtService: JwtService,
-    private drivesRepository: DrivesRepository,
+    private drivesService: DrivesService,
   ) {}
 
   async validateUser(
@@ -65,7 +65,7 @@ export class AuthService {
 
     const user = await this.userRepository.createUser(registerDto);
 
-    await this.drivesRepository.createDefaultDrivesForNewUser(user.id!);
+    await this.drivesService.createDefaultDrivesForNewUser(user.id!);
     return user;
   }
 

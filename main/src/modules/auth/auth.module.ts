@@ -6,11 +6,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
-import { DrivesRepository } from '../drives/drives.repository';
+import { DrivesService } from '../drives/drives.service';
+import { DrivesModule } from '../drives/drives.module';
 
 @Module({
   imports: [
     UsersModule,
+    DrivesModule,
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({
@@ -29,6 +31,6 @@ import { DrivesRepository } from '../drives/drives.repository';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStategy, JwtStrategy, DrivesRepository],
+  providers: [AuthService, LocalStategy, JwtStrategy, DrivesService],
 })
 export class AuthModule {}

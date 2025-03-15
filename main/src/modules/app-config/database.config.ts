@@ -1,7 +1,7 @@
 export interface DatabseConfig {
   host: string;
   port: number;
-  name: string;
+  database: string;
   user: string;
   password: string;
 }

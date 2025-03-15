@@ -9,5 +9,6 @@ import { ConfigModule } from '@nestjs/config';
   imports: [SupabaseModule, ConfigModule],
   controllers: [DrivesController],
   providers: [DrivesService, DrivesRepository],
+  exports: [DrivesService],
 })
 export class DrivesModule {}

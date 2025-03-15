@@ -43,16 +43,6 @@ export class DrivesRepository {
     });
   }
 
-  createDefaultDrivesForNewUser(userId: number): Promise<NewDrive> {
-    const insertDrive: InsertDrive = {
-      name: 'My Drive',
-      type: 'folder',
-      user_id: userId,
-    };
-
-    return this.createDrive(insertDrive);
-  }
-
   getDriveById(id: number, userId: number): Promise<Drive | undefined> {
     return this.drizzleService.db.query.drives.findFirst({
       where: and(eq(drives.user_id, userId), eq(drives.id, id)),

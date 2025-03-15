@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateDriveDto } from './dto/create-drive.dto';
 import { DrivesRepository } from './drives.repository';
-import { Drive, NewDrive } from '../database/schemas';
+import { Drive, InsertDrive, NewDrive } from '../database/schemas';
 import { JwtPayload } from '../auth/types';
 import { GetDrivesQueryString, UploadFileDto } from './dto';
 import { StorageSerice } from '../../shared/supabase/storage.service';
@@ -92,5 +92,15 @@ export class DrivesService {
     }
 
     return driveExisted;
+  }
+
+  createDefaultDrivesForNewUser(userId: number): Promise<NewDrive> {
+    const insertDrive: InsertDrive = {
+      name: 'My Drive',
+      type: 'folder',
+      user_id: userId,
+    };
+
+    return this.drivesRepository.createDrive(insertDrive);
   }
 }
