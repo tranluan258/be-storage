@@ -24,7 +24,7 @@ import { DrivesModule } from './modules/drives/drives.module';
           port: dbConfig.port,
           user: dbConfig.user,
           password: dbConfig.password,
-          database: dbConfig.name,
+          database: dbConfig.database,
         };
       },
     }),

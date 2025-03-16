@@ -10,7 +10,6 @@ export class UploadFileDto {
   url?: string;
 
   @ApiProperty({
-    type: 'file',
     name: 'file',
     format: 'binary',
   })

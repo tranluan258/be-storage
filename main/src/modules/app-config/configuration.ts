@@ -4,7 +4,7 @@ export default (): Record<string, unknown> => ({
   database: {
     host: ENV.DB_HOST,
     port: parseInt(ENV.DB_PORT!, 10) || 5432,
-    name: ENV.DB_NAME,
+    database: ENV.DB_NAME,
     user: ENV.DB_USER,
     password: ENV.DB_PASSWORD,
   },

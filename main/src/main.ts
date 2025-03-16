@@ -2,9 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { HonoAdapter, NestHonoApplication } from '@kiyasov/platform-hono';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create<NestHonoApplication>(
+    AppModule,
+    new HonoAdapter(),
+    { cors: true },
+  );
 
   app.setGlobalPrefix('/api/v1');
   app.enableCors({
